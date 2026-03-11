@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KC7 Cyber Defense Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@300;400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--cyan:#00E5FF;--green:#00FF88;--orange:#FF6B35;--dark:#060C12;--navy:#0A1628;--slate:#0F2239;--text:#C8D8E8;--dim:#7A9BB5;--mono:'Share Tech Mono',monospace;--sans:'Barlow',sans-serif;--cond:'Barlow Condensed',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:var(--sans);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,229,255,.012) 2px,rgba(0,229,255,.012) 4px);pointer-events:none;z-index:9999}
+.page{display:none;min-height:100vh}.page.active{display:block}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,12,18,.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,229,255,.15)}
+.nav-logo{font-family:var(--mono);font-size:20px;color:var(--cyan);letter-spacing:3px;cursor:pointer}.nav-logo span{color:var(--green)}
+.nav-links{display:flex;gap:36px;list-style:none}.nav-links a{font-family:var(--mono);font-size:12px;color:var(--dim);text-decoration:none;letter-spacing:2px;text-transform:uppercase;transition:color .2s;cursor:pointer}.nav-links a:hover{color:var(--cyan)}
+.nav-cta{font-family:var(--mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--dark);background:var(--cyan);border:none;padding:10px 24px;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background .2s}.nav-cta:hover{background:var(--green)}
+.nav-back{font-family:var(--mono);font-size:12px;color:var(--dim);background:none;border:1px solid rgba(0,229,255,.25);padding:8px 20px;cursor:pointer;letter-spacing:2px;text-transform:uppercase;transition:all .2s;display:none}.nav-back:hover{color:var(--cyan);border-color:var(--cyan)}
+.btn-primary{font-family:var(--mono);font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--dark);background:var(--cyan);border:none;padding:16px 36px;cursor:pointer;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);transition:all .2s;font-weight:700}.btn-primary:hover{background:var(--green);transform:translateY(-2px)}
+.btn-secondary{font-family:var(--mono);font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);background:transparent;border:1px solid rgba(0,229,255,.4);padding:15px 36px;cursor:pointer;transition:all .2s}.btn-secondary:hover{border-color:var(--cyan);background:rgba(0,229,255,.05)}
+.btn-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.sh{text-align:center;margin-bottom:64px}
+.stag{font-family:var(--mono);font-size:11px;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:16px;display:block}
+.stitle{font-family:var(--cond);font-size:clamp(36px,5vw,64px);font-weight:900;text-transform:uppercase;color:#fff;line-height:.95}
+.stitle em{font-style:normal;color:var(--cyan)}
+.sdesc{font-size:17px;color:var(--dim);max-width:600px;margin:20px auto 0;line-height:1.7}
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:120px 48px 80px}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,229,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.05) 1px,transparent 1px);background-size:60px 60px;animation:grid-drift 20s linear infinite}
+@keyframes grid-drift{0%{transform:translateY(0)}100%{transform:translateY(60px)}}
+.hero-glow{position:absolute;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,255,.08) 0%,transparent 70%);top:50%;right:-200px;transform:translateY(-50%);pointer-events:none}
+.hero-content{position:relative;z-index:2;max-width:780px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;margin-bottom:28px;padding:8px 16px;border:1px solid rgba(0,229,255,.3);background:rgba(0,229,255,.05)}
+.hero-badge::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.tline{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:1px;margin-bottom:6px}.tline::before{content:'> ';opacity:.5}
+.hero-title{font-family:var(--cond);font-size:clamp(52px,7vw,96px);font-weight:900;line-height:.9;text-transform:uppercase;letter-spacing:-1px;margin-bottom:12px}
+.hero-title .l1{color:#fff}.hero-title .l2{color:var(--cyan)}.hero-title .l3{color:transparent;-webkit-text-stroke:1px rgba(0,229,255,.4)}
+.hero-sub{font-size:18px;font-weight:300;color:var(--dim);line-height:1.6;max-width:560px;margin:28px 0 44px}.hero-sub strong{color:var(--text);font-weight:500}
+.hero-stats{position:absolute;right:80px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:32px;z-index:2}
+.stat-item{text-align:right}.stat-num{font-family:var(--cond);font-size:48px;font-weight:900;color:var(--cyan);line-height:1}.stat-lbl{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+.stat-div{width:1px;height:32px;background:linear-gradient(to bottom,transparent,rgba(0,229,255,.3),transparent);margin-left:auto}
+/* HOW */
+#how{padding:120px 48px;background:var(--navy);position:relative}
+#how::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
+.how-flow{display:flex;max-width:1100px;margin:0 auto}
+.how-step{flex:1;padding:40px 32px;border:1px solid rgba(0,229,255,.1);border-right:none;position:relative;background:rgba(255,255,255,.01);transition:background .3s}
+.how-step:last-child{border-right:1px solid rgba(0,229,255,.1)}.how-step:hover{background:rgba(0,229,255,.04)}
+.how-step::after{content:'→';position:absolute;right:-18px;top:50%;transform:translateY(-50%);color:var(--cyan);font-size:20px;z-index:2;background:var(--navy);padding:4px}
+.how-step:last-child::after{display:none}
+.how-num{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:2px;margin-bottom:20px;opacity:.7}
+.how-ico{font-size:32px;margin-bottom:16px;display:block}
+.how-tit{font-family:var(--cond);font-size:20px;font-weight:700;text-transform:uppercase;color:#fff;margin-bottom:12px}
+.how-desc{font-size:14px;color:var(--dim);line-height:1.6}
+/* ROADMAP */
+#roadmap{padding:120px 48px;background:var(--dark);overflow:hidden}
+.rtrack{max-width:1100px;margin:0 auto;position:relative}
+.rline{position:absolute;top:56px;left:60px;right:60px;height:2px;background:linear-gradient(90deg,var(--cyan),var(--green),var(--orange));opacity:.4}
+.rnodes{display:flex;justify-content:space-between;position:relative;z-index:1}
+.rnode{display:flex;flex-direction:column;align-items:center;gap:14px;flex:1;cursor:pointer}
+.rcirc{width:112px;height:112px;border-radius:50%;border:2px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--dark);transition:all .3s}
+.rnode:hover .rcirc{transform:translateY(-4px);box-shadow:0 0 24px rgba(0,229,255,.2)}
+.rnum-sm{font-family:var(--mono);font-size:10px;letter-spacing:1px}.ric{font-size:28px}
+.rlabel{font-family:var(--cond);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:center;color:#fff}
+.rsub{font-family:var(--mono);font-size:9px;color:var(--dim);text-align:center;letter-spacing:1px;text-transform:uppercase}
+.rhours{font-family:var(--mono);font-size:12px;font-weight:bold;text-align:center}
+.rtier{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border:1px solid;opacity:.6}
+.f3ead-row{max-width:900px;margin:56px auto 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;text-align:center}
+.f3cell{padding:24px;border:1px solid rgba(0,229,255,.1);background:rgba(0,229,255,.03)}
+.f3tag{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.f3tit{font-family:var(--cond);font-size:18px;font-weight:700;color:#fff;text-transform:uppercase}
+.f3sub{font-size:12px;color:var(--dim);margin-top:6px}
+/* CAREER CARDS */
+#careers{padding:120px 48px;background:var(--navy);position:relative}
+#careers::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.cgrid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.cc{border:1px solid rgba(0,229,255,.12);background:rgba(255,255,255,.015);padding:36px;position:relative;transition:all .3s;cursor:pointer;overflow:hidden;display:flex;flex-direction:column}
+.cc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--ca);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.cc:hover::before{transform:scaleX(1)}.cc:hover{border-color:rgba(0,229,255,.25);background:rgba(0,229,255,.03);transform:translateY(-4px)}
+.cc-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
+.cc-stage{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--ca);text-transform:uppercase;padding:4px 10px;border:1px solid var(--ca);opacity:.8}
+.cc-ico{font-size:36px}
+.nist-chip{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--green);border:1px solid rgba(0,255,136,.2);padding:2px 8px;margin-bottom:12px;text-transform:uppercase}
+.cc-role{font-family:var(--cond);font-size:24px;font-weight:900;text-transform:uppercase;color:#fff;line-height:1;margin-bottom:6px}
+.cc-nist{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:14px}
+.hours-bar{display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.07);margin-bottom:18px}
+.hb-ico{font-size:18px}.hb-info{flex:1}
+.hb-total{font-family:var(--cond);font-size:26px;font-weight:900;color:var(--ca);line-height:1}
+.hb-lbl{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase}
+.hb-count{font-family:var(--mono);font-size:10px;color:var(--dim);text-align:right;line-height:1.5}
+.cc-desc{font-size:14px;color:var(--dim);line-height:1.65;margin-bottom:20px}
+.flabel{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--ca);text-transform:uppercase;margin-bottom:10px}
+.ftags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px}
+.ftag{font-family:var(--mono);font-size:10px;color:var(--text);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:4px 10px}
+.cc-cta{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.15);margin-top:auto;transition:all .3s}
+.cc:hover .cc-cta{background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.3)}
+.cc-cta-txt{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--cyan);text-transform:uppercase}
+.cc-cta-arr{color:var(--cyan);font-size:18px}
+/* SKILLS */
+#skills{padding:120px 48px;background:var(--dark)}
+.hours-summary{max-width:960px;margin:0 auto 72px;display:grid;grid-template-columns:repeat(6,1fr);gap:2px}
+.hs-cell{padding:24px 16px;background:rgba(255,255,255,.02);border:1px solid rgba(0,229,255,.1);text-align:center}
+.hs-num{font-family:var(--cond);font-size:36px;font-weight:900;color:var(--cyan);line-height:1}
+.hs-lbl{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--dim);text-transform:uppercase;margin-top:6px;line-height:1.4}
+.sc{max-width:900px;margin:0 auto}
+.st{display:flex;gap:24px;align-items:flex-start;margin-bottom:40px;position:relative}
+.st:not(:last-child)::after{content:'';position:absolute;left:28px;top:56px;bottom:-40px;width:1px;background:linear-gradient(to bottom,rgba(0,229,255,.3),rgba(0,229,255,.05))}
+.stn{flex-shrink:0;width:56px;height:56px;border:1px solid rgba(0,229,255,.25);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:18px;color:var(--cyan);background:rgba(0,229,255,.05)}
+.stc{flex:1}.sth{display:flex;align-items:center;gap:16px;margin-bottom:12px;flex-wrap:wrap}
+.stt{font-family:var(--cond);font-size:22px;font-weight:700;text-transform:uppercase;color:#fff}
+.str{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--cyan);text-transform:uppercase;opacity:.7}
+.sbars{display:flex;flex-direction:column;gap:8px}
+.sbr{display:flex;align-items:center;gap:14px}
+.sbn{font-family:var(--mono);font-size:11px;color:var(--dim);width:190px;flex-shrink:0}
+.sbt{flex:1;height:6px;background:rgba(255,255,255,.05);position:relative;overflow:hidden}
+.sbf{height:100%;background:linear-gradient(90deg,var(--cyan),var(--green));position:absolute;left:0;top:0;animation:fillbar 1.5s ease forwards}
+@keyframes fillbar{from{width:0}to{width:var(--w)}}
+.sbp{font-family:var(--mono);font-size:10px;color:var(--cyan);width:36px;text-align:right}
+/* CTA */
+#cta{padding:120px 48px;background:linear-gradient(135deg,var(--slate) 0%,var(--navy) 100%);text-align:center;position:relative;overflow:hidden}
+#cta::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--orange),transparent)}
+.cta-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,255,.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.ctac{position:relative;z-index:2}
+.ctag{font-family:var(--mono);font-size:11px;letter-spacing:4px;color:var(--orange);text-transform:uppercase;margin-bottom:24px;display:block}
+.ctit{font-family:var(--cond);font-size:clamp(48px,6vw,88px);font-weight:900;text-transform:uppercase;color:#fff;line-height:.9;margin-bottom:28px}
+.ctit em{font-style:normal;color:var(--cyan);display:block}
+.csub{font-size:17px;color:var(--dim);max-width:520px;margin:0 auto 48px;line-height:1.7}
+footer{padding:40px 48px;background:var(--dark);border-top:1px solid rgba(0,229,255,.08);display:flex;justify-content:space-between;align-items:center}
+.fl{font-family:var(--mono);font-size:16px;color:var(--cyan);letter-spacing:3px}
+.ft{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
+.fn{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:1px;text-align:right;line-height:1.8}
+/* DETAIL PAGE */
+#detail-page{padding-top:64px}
+.detail-wrapper{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 64px)}
+.detail-sidebar{background:var(--navy);border-right:1px solid rgba(0,229,255,.1);padding:40px 28px;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;display:flex;flex-direction:column;gap:24px}
+.ds-icon-wrap{width:72px;height:72px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 8px}
+.ds-role{font-family:var(--cond);font-size:20px;font-weight:900;text-transform:uppercase;color:#fff;text-align:center;line-height:1.1}
+.ds-desc{font-size:13px;color:var(--dim);line-height:1.65;text-align:center}
+.ds-stats{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.ds-stat{background:rgba(0,0,0,.3);padding:16px 12px;text-align:center}
+.ds-stat-num{font-family:var(--cond);font-size:28px;font-weight:900;line-height:1}
+.ds-stat-lbl{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-top:4px}
+.ds-cert{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);padding:16px;text-align:center}
+.ds-cert-icon{font-size:24px;margin-bottom:8px}
+.ds-cert-txt{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:1px;line-height:1.5;text-transform:uppercase}
+.ds-cert-txt strong{color:var(--green);display:block;margin-bottom:4px}
+.ds-nist{font-family:var(--mono);font-size:9px;color:var(--dim);opacity:.6;text-align:center;letter-spacing:1px;text-transform:uppercase}
+.ds-start{font-family:var(--mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--dark);border:none;padding:14px;cursor:pointer;width:100%;font-weight:700;transition:background .2s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)}
+.detail-main{background:var(--dark);padding:48px 56px;overflow-y:auto}
+.dm-title{font-family:var(--cond);font-size:40px;font-weight:900;text-transform:uppercase;color:#fff;margin-bottom:8px}
+.dm-sub{font-size:15px;color:var(--dim);margin-bottom:40px}
+.emp-box{border:1px solid rgba(0,229,255,.12);background:rgba(255,255,255,.015);margin-bottom:40px;overflow:hidden}
+.emp-header{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid rgba(0,229,255,.08);cursor:pointer;transition:background .2s}
+.emp-header:hover{background:rgba(0,229,255,.03)}
+.emp-header-txt{font-family:var(--cond);font-size:17px;font-weight:700;text-transform:uppercase;color:#fff;letter-spacing:1px}
+.emp-toggle{color:var(--cyan);font-size:18px}
+.emp-body{padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.emp-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text);line-height:1.5}
+.emp-check{color:var(--green);font-size:14px;flex-shrink:0;margin-top:1px}
+.module-list{display:flex;flex-direction:column;gap:12px}
+.module-card{border:1px solid rgba(0,229,255,.1);background:rgba(255,255,255,.01);overflow:hidden;transition:border-color .2s}
+.module-card:hover{border-color:rgba(0,229,255,.22)}
+.mc-header{display:flex;align-items:center;gap:16px;padding:16px 20px;cursor:pointer;transition:background .2s}
+.mc-header:hover{background:rgba(0,229,255,.03)}
+.mc-num{font-family:var(--mono);font-size:12px;color:var(--dim);width:36px;flex-shrink:0}
+.mc-info{flex:1}
+.mc-name{font-size:15px;color:#fff;font-weight:600;margin-bottom:4px}
+.mc-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.mc-dur{font-family:var(--mono);font-size:11px;color:var(--cyan);display:flex;align-items:center;gap:4px}
+.mc-diff{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border:1px solid}
+.mc-phase{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--dim)}
+.mc-toggle{color:var(--dim);font-size:16px;flex-shrink:0}
+.mc-body{padding:0 20px 20px 72px;display:none}
+.mc-body.open{display:block}
+.mc-section{margin-bottom:14px}
+.mc-section-lbl{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:8px}
+.mc-tags{display:flex;flex-wrap:wrap;gap:6px}
+.mc-tag{font-family:var(--mono);font-size:10px;color:var(--text);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:3px 10px}
+.mc-why{font-size:13px;color:var(--dim);line-height:1.65}
+.phase-sep{display:flex;align-items:center;gap:16px;margin:28px 0 16px}
+.phase-sep-line{flex:1;height:1px;background:rgba(0,229,255,.1)}
+.phase-sep-txt{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;white-space:nowrap;padding:4px 14px;border:1px solid;font-weight:bold}
+.diff-easy{color:#00FF88;border-color:rgba(0,255,136,.35)}
+.diff-moderate{color:#FFCA28;border-color:rgba(255,202,40,.35)}
+.diff-challenging{color:#FF7043;border-color:rgba(255,112,67,.35)}
+.diff-hard{color:#FF6B35;border-color:rgba(255,107,53,.35)}
+.diff-dont{color:#FF3B3B;border-color:rgba(255,59,59,.35)}
+.psep-1{color:#00FF88;border-color:rgba(0,255,136,.3)}
+.psep-2{color:#FFCA28;border-color:rgba(255,202,40,.3)}
+.psep-3{color:#FF7043;border-color:rgba(255,112,67,.3)}
+.psep-4{color:#FF3B3B;border-color:rgba(255,59,59,.3)}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo" onclick="showHome()">KC<span>7</span></div>
+  <ul class="nav-links">
+    <li><a onclick="showHome();scrollToSec('how')">How It Works</a></li>
+    <li><a onclick="showHome();scrollToSec('roadmap')">Roadmap</a></li>
+    <li><a onclick="showHome();scrollToSec('careers')">Career Paths</a></li>
+    <li><a onclick="showHome();scrollToSec('skills')">Skill Growth</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center">
+    <button class="nav-back" id="nav-back" onclick="showHome()">← Back to Academy</button>
+    <button class="nav-cta">Begin Training</button>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div id="home-page" class="page active">
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Cyber Defense Academy — Now Enrolling</div>
+    <div class="tline">Initializing training protocol...</div>
+    <div class="tline">Loading career paths: 6 of 6 ready</div>
+    <div class="tline">Total investigation hours: 750+ across all paths</div>
+    <h1 class="hero-title" style="margin-top:20px">
+      <span class="l1">Welcome to</span><br>
+      <span class="l2">KC7 Cyber</span><br>
+      <span class="l3">Defense Academy</span>
+    </h1>
+    <p class="hero-sub">Train like an <strong>intelligence professional</strong>. Solve real-world investigation cases. Build the skills that actually stop adversaries — from frontline SOC triage to elite digital forensics.</p>
+    <div class="btn-actions">
+      <button class="btn-primary" onclick="showDetail('soc')">Start Your Cyber Career Path</button>
+      <button class="btn-secondary" onclick="scrollToSec('roadmap')">View the Roadmap</button>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item"><div class="stat-num">6</div><div class="stat-lbl">Career Paths</div></div>
+    <div class="stat-div"></div>
+    <div class="stat-item"><div class="stat-num">750+</div><div class="stat-lbl">Total Hours</div></div>
+    <div class="stat-div"></div>
+    <div class="stat-item"><div class="stat-num">4</div><div class="stat-lbl">Difficulty Tiers</div></div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="sh">
+    <span class="stag">The Learning Model</span>
+    <h2 class="stitle">How the <em>Academy</em> Works</h2>
+    <p class="sdesc">Intelligence-Driven Incident Response isn't a theory — it's the method. Every case you solve builds real defensive instincts.</p>
+  </div>
+  <div class="how-flow">
+    <div class="how-step"><div class="how-num">01</div><span class="how-ico">🔍</span><div class="how-tit">Solve Real Cases</div><p class="how-desc">Authentic scenarios — ransomware outbreaks, APT intrusions, insider threats, supply chain attacks — all data-driven.</p></div>
+    <div class="how-step"><div class="how-num">02</div><span class="how-ico">🗺️</span><div class="how-tit">Follow Career Paths</div><p class="how-desc">Cases curated into six NICE-aligned career paths, progressing from SOC triage to expert forensics.</p></div>
+    <div class="how-step"><div class="how-num">03</div><span class="how-ico">📈</span><div class="how-tit">Build Skills Progressively</div><p class="how-desc">Four tiers per path: Foundational → Intermediate → Advanced → Capstone. Duration shown per module.</p></div>
+    <div class="how-step"><div class="how-num">04</div><span class="how-ico">🏆</span><div class="how-tit">Earn Certifications</div><p class="how-desc">Complete a path and earn a NICE-aligned credential, validated by real-world investigation outcomes.</p></div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="sh">
+    <span class="stag">The Player Journey</span>
+    <h2 class="stitle">Career Path <em>Progression</em></h2>
+    <p class="sdesc">Sequenced to mirror how a world-class security operations program matures — from reactive detection to proactive intelligence to definitive proof.</p>
+  </div>
+  <div class="rtrack">
+    <div class="rline"></div>
+    <div class="rnodes">
+      <div class="rnode" onclick="showDetail('soc')"><div class="rcirc" style="border-color:#00E5FF"><div class="rnum-sm" style="color:#00E5FF">STAGE 01</div><div class="ric">🖥️</div></div><div class="rlabel">SOC Analyst</div><div class="rsub">See the Threat</div><div class="rhours" style="color:#00E5FF">~172 hrs</div><div class="rtier" style="color:#00E5FF;border-color:#00E5FF">Foundational</div></div>
+      <div class="rnode" onclick="showDetail('ir')"><div class="rcirc" style="border-color:#29B6F6"><div class="rnum-sm" style="color:#29B6F6">STAGE 02</div><div class="ric">🚨</div></div><div class="rlabel">Incident Responder</div><div class="rsub">Stop the Threat</div><div class="rhours" style="color:#29B6F6">~227 hrs</div><div class="rtier" style="color:#29B6F6;border-color:#29B6F6">Intermediate</div></div>
+      <div class="rnode" onclick="showDetail('cti')"><div class="rcirc" style="border-color:#00FF88"><div class="rnum-sm" style="color:#00FF88">STAGE 03</div><div class="ric">🔭</div></div><div class="rlabel">Threat Intel Analyst</div><div class="rsub">Understand the Threat</div><div class="rhours" style="color:#00FF88">~282 hrs</div><div class="rtier" style="color:#00FF88;border-color:#00FF88">Intermediate</div></div>
+      <div class="rnode" onclick="showDetail('va')"><div class="rcirc" style="border-color:#FFCA28"><div class="rnum-sm" style="color:#FFCA28">STAGE 04</div><div class="ric">🛡️</div></div><div class="rlabel">Vulnerability Analyst</div><div class="rsub">Prevent the Threat</div><div class="rhours" style="color:#FFCA28">~136 hrs</div><div class="rtier" style="color:#FFCA28;border-color:#FFCA28">Advanced</div></div>
+      <div class="rnode" onclick="showDetail('ma')"><div class="rcirc" style="border-color:#FF7043"><div class="rnum-sm" style="color:#FF7043">STAGE 05</div><div class="ric">🧬</div></div><div class="rlabel">Malware Analyst</div><div class="rsub">Dissect the Threat</div><div class="rhours" style="color:#FF7043">~136 hrs</div><div class="rtier" style="color:#FF7043;border-color:#FF7043">Advanced</div></div>
+      <div class="rnode" onclick="showDetail('df')"><div class="rcirc" style="border-color:#FF6B35"><div class="rnum-sm" style="color:#FF6B35">STAGE 06</div><div class="ric">🔬</div></div><div class="rlabel">Digital Forensics</div><div class="rsub">Prove the Threat</div><div class="rhours" style="color:#FF6B35">~279 hrs</div><div class="rtier" style="color:#FF6B35;border-color:#FF6B35">Expert Capstone</div></div>
+    </div>
+  </div>
+  <div class="f3ead-row">
+    <div class="f3cell"><div class="f3tag" style="color:var(--cyan)">F3EAD Phase</div><div class="f3tit">Find &amp; Fix</div><div class="f3sub">Stages 1–2 · ~399 hrs</div></div>
+    <div class="f3cell"><div class="f3tag" style="color:var(--green)">F3EAD Phase</div><div class="f3tit">Exploit · Analyze · Disseminate</div><div class="f3sub">Stages 3–4 · ~418 hrs</div></div>
+    <div class="f3cell"><div class="f3tag" style="color:var(--orange)">F3EAD Phase</div><div class="f3tit">Deep Analysis</div><div class="f3sub">Stages 5–6 · ~415 hrs</div></div>
+  </div>
+</section>
+
+<section id="careers">
+  <div class="sh">
+    <span class="stag">The Six Paths</span>
+    <h2 class="stitle">Choose Your <em>Career Path</em></h2>
+    <p class="sdesc">Each path structured across four progressive difficulty tiers. Click any card to explore the full curriculum with module durations.</p>
+  </div>
+  <div class="cgrid">
+    <div class="cc" style="--ca:#00E5FF" onclick="showDetail('soc')">
+      <div class="cc-head"><div class="cc-stage">Stage 01</div><div class="cc-ico">🖥️</div></div>
+      <div class="nist-chip">NICE PD-WRL-001</div><div class="cc-role">SOC Analyst</div><div class="cc-nist">Defensive Cybersecurity</div>
+      <div class="hours-bar"><div class="hb-ico">⏱️</div><div class="hb-info"><div class="hb-total">~172 hrs</div><div class="hb-lbl">Total Path Duration</div></div><div class="hb-count">12 modules<br>4 phases</div></div>
+      <p class="cc-desc">The frontline defender. Master massive datasets, triage alerts, and execute the Find and Fix phases of F3EAD using the OODA loop.</p>
+      <div class="flabel">Key Skills</div>
+      <div class="ftags"><span class="ftag">KQL Queries</span><span class="ftag">Log Analysis</span><span class="ftag">Alert Triage</span><span class="ftag">Kill Chain Mapping</span><span class="ftag">XDR Platforms</span></div>
+      <div class="cc-cta"><span class="cc-cta-txt">View Full Curriculum</span><span class="cc-cta-arr">→</span></div>
+    </div>
+    <div class="cc" style="--ca:#29B6F6" onclick="showDetail('ir')">
+      <div class="cc-head"><div class="cc-stage">Stage 02</div><div class="cc-ico">🚨</div></div>
+      <div class="nist-chip">NICE PD-WRL-003</div><div class="cc-role">Incident Responder</div><div class="cc-nist">Incident Response</div>
+      <div class="hours-bar"><div class="hb-ico">⏱️</div><div class="hb-info"><div class="hb-total">~227 hrs</div><div class="hb-lbl">Total Path Duration</div></div><div class="hb-count">12 modules<br>4 phases</div></div>
+      <p class="cc-desc">Stop the bleeding. Execute the full IR cycle by reconstructing attacker kill chains and removing adversary footholds.</p>
+      <div class="flabel">Key Skills</div>
+      <div class="ftags"><span class="ftag">Timeline Reconstruction</span><span class="ftag">Containment</span><span class="ftag">MITRE ATT&amp;CK</span><span class="ftag">Ransomware Response</span></div>
+      <div class="cc-cta"><span class="cc-cta-txt">View Full Curriculum</span><span class="cc-cta-arr">→</span></div>
+    </div>
+    <div class="cc" style="--ca:#00FF88" onclick="showDetail('cti')">
+      <div class="cc-head"><div class="cc-stage">Stage 03</div><div class="cc-ico">🔭</div></div>
+      <div class="nist-chip">NICE PD-WRL-006</div><div class="cc-role">Threat Intel Analyst</div><div class="cc-nist">Threat Analysis</div>
+      <div class="hours-bar"><div class="hb-ico">⏱️</div><div class="hb-info"><div class="hb-total">~282 hrs</div><div class="hb-lbl">Total Path Duration</div></div><div class="hb-count">12 modules<br>4 phases</div></div>
+      <p class="cc-desc">Track APT groups, execute the Exploit/Analyze/Disseminate phases, and elevate defenses up the Pyramid of Pain.</p>
+      <div class="flabel">Key Skills</div>
+      <div class="ftags"><span class="ftag">Diamond Model</span><span class="ftag">OSINT</span><span class="ftag">APT Attribution</span><span class="ftag">PassiveDNS</span><span class="ftag">TTP Clustering</span></div>
+      <div class="cc-cta"><span class="cc-cta-txt">View Full Curriculum</span><span class="cc-cta-arr">→</span></div>
+    </div>
+    <div class="cc" style="--ca:#FFCA28" onclick="showDetail('va')">
+      <div class="cc-head"><div class="cc-stage">Stage 04</div><div class="cc-ico">🛡️</div></div>
+      <div class="nist-chip">NICE PD-WRL-007</div><div class="cc-role">Vulnerability Analyst</div><div class="cc-nist">Vulnerability Analysis</div>
+      <div class="hours-bar"><div class="hb-ico">⏱️</div><div class="hb-info"><div class="hb-total">~136 hrs</div><div class="hb-lbl">Total Path Duration</div></div><div class="hb-count">11 modules<br>4 phases</div></div>
+      <p class="cc-desc">Prevent the threat before it lands. Map attack surfaces, assess defense-in-depth, and disrupt the Kill Chain's Exploitation phase.</p>
+      <div class="flabel">Key Skills</div>
+      <div class="ftags"><span class="ftag">Attack Surface Mapping</span><span class="ftag">Supply Chain Risk</span><span class="ftag">Web Exploitation</span><span class="ftag">Defense-in-Depth</span></div>
+      <div class="cc-cta"><span class="cc-cta-txt">View Full Curriculum</span><span class="cc-cta-arr">→</span></div>
+    </div>
+    <div class="cc" style="--ca:#FF7043" onclick="showDetail('ma')">
+      <div class="cc-head"><div class="cc-stage">Stage 05</div><div class="cc-ico">🧬</div></div>
+      <div class="nist-chip">NICE PD-WRL-001 / 003</div><div class="cc-role">Malware Analyst</div><div class="cc-nist">Defensive Cybersecurity / IR</div>
+      <div class="hours-bar"><div class="hb-ico">⏱️</div><div class="hb-info"><div class="hb-total">~136 hrs</div><div class="hb-lbl">Total Path Duration</div></div><div class="hb-count">12 modules<br>4 phases</div></div>
+      <p class="cc-desc">Dissect threats at code level. Unpack obfuscated payloads, reverse-engineer droppers, and analyze the Capabilities vertex of the Diamond Model.</p>
+      <div class="flabel">Key Skills</div>
+      <div class="ftags"><span class="ftag">Static Analysis</span><span class="ftag">Dynamic Analysis</span><span class="ftag">CyberChef</span><span class="ftag">Deobfuscation</span><span class="ftag">Process Trees</span></div>
+      <div class="cc-cta"><span class="cc-cta-txt">View Full Curriculum</span><span class="cc-cta-arr">→</span></div>
+    </div>
+    <div class="cc" style="--ca:#FF6B35" onclick="showDetail('df')">
+      <div class="cc-head"><div class="cc-stage">Stage 06</div><div class="cc-ico">🔬</div></div>
+      <div class="nist-chip">NICE PD-WRL-002 / IN-WRL-002</div><div class="cc-role">Digital Forensics Analyst</div><div class="cc-nist">Digital Forensics / Evidence Analysis</div>
+      <div class="hours-bar"><div class="hb-ico">⏱️</div><div class="hb-info"><div class="hb-total">~279 hrs</div><div class="hb-lbl">Total Path Duration</div></div><div class="hb-count">12 modules<br>4 phases</div></div>
+      <p class="cc-desc">Prove the threat definitively. Reconstruct timelines from sparse clues, uncover insider threats, and legally prove unauthorized activities.</p>
+      <div class="flabel">Key Skills</div>
+      <div class="ftags"><span class="ftag">Timeline Reconstruction</span><span class="ftag">Disk/Memory Analysis</span><span class="ftag">PCAP Analysis</span><span class="ftag">Anti-Forensics</span></div>
+      <div class="cc-cta"><span class="cc-cta-txt">View Full Curriculum</span><span class="cc-cta-arr">→</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="sh">
+    <span class="stag">Your Progress</span>
+    <h2 class="stitle">Skill <em>Growth</em> Across the Academy</h2>
+    <p class="sdesc">As you complete each career path, your proficiency across every core domain compounds.</p>
+  </div>
+  <div class="hours-summary">
+    <div class="hs-cell"><div class="hs-num">~172</div><div class="hs-lbl">SOC Analyst Stage 1</div></div>
+    <div class="hs-cell"><div class="hs-num">~227</div><div class="hs-lbl">Incident Responder Stage 2</div></div>
+    <div class="hs-cell"><div class="hs-num">~282</div><div class="hs-lbl">Threat Intel Stage 3</div></div>
+    <div class="hs-cell"><div class="hs-num">~136</div><div class="hs-lbl">Vulnerability Stage 4</div></div>
+    <div class="hs-cell"><div class="hs-num">~136</div><div class="hs-lbl">Malware Analyst Stage 5</div></div>
+    <div class="hs-cell"><div class="hs-num">~279</div><div class="hs-lbl">Digital Forensics Stage 6</div></div>
+  </div>
+  <div class="sc">
+    <div class="st"><div class="stn">01</div><div class="stc"><div class="sth"><div class="stt">Foundations</div><div class="str">SOC Analyst · ~172 hrs</div></div><div class="sbars"><div class="sbr"><div class="sbn">Log Querying (KQL)</div><div class="sbt"><div class="sbf" style="--w:65%"></div></div><div class="sbp">65%</div></div><div class="sbr"><div class="sbn">Alert Triage</div><div class="sbt"><div class="sbf" style="--w:60%"></div></div><div class="sbp">60%</div></div><div class="sbr"><div class="sbn">Kill Chain Awareness</div><div class="sbt"><div class="sbf" style="--w:50%"></div></div><div class="sbp">50%</div></div></div></div></div>
+    <div class="st"><div class="stn">02</div><div class="stc"><div class="sth"><div class="stt">Security Investigation</div><div class="str">Incident Responder · ~227 hrs</div></div><div class="sbars"><div class="sbr"><div class="sbn">Log Querying (KQL)</div><div class="sbt"><div class="sbf" style="--w:80%"></div></div><div class="sbp">80%</div></div><div class="sbr"><div class="sbn">Timeline Reconstruction</div><div class="sbt"><div class="sbf" style="--w:70%"></div></div><div class="sbp">70%</div></div><div class="sbr"><div class="sbn">IR Cycle Management</div><div class="sbt"><div class="sbf" style="--w:75%"></div></div><div class="sbp">75%</div></div><div class="sbr"><div class="sbn">Ransomware Analysis</div><div class="sbt"><div class="sbf" style="--w:65%"></div></div><div class="sbp">65%</div></div></div></div></div>
+    <div class="st"><div class="stn">03</div><div class="stc"><div class="sth"><div class="stt">Threat Analysis</div><div class="str">Stages 3–4 · ~418 hrs combined</div></div><div class="sbars"><div class="sbr"><div class="sbn">APT Attribution</div><div class="sbt"><div class="sbf" style="--w:80%"></div></div><div class="sbp">80%</div></div><div class="sbr"><div class="sbn">OSINT &amp; PassiveDNS</div><div class="sbt"><div class="sbf" style="--w:75%"></div></div><div class="sbp">75%</div></div><div class="sbr"><div class="sbn">Vulnerability Assessment</div><div class="sbt"><div class="sbf" style="--w:85%"></div></div><div class="sbp">85%</div></div><div class="sbr"><div class="sbn">Defense Architecture</div><div class="sbt"><div class="sbf" style="--w:78%"></div></div><div class="sbp">78%</div></div></div></div></div>
+    <div class="st"><div class="stn">04</div><div class="stc"><div class="sth"><div class="stt">Deep Technical</div><div class="str">Malware Analyst · ~136 hrs</div></div><div class="sbars"><div class="sbr"><div class="sbn">Static Malware Analysis</div><div class="sbt"><div class="sbf" style="--w:88%"></div></div><div class="sbp">88%</div></div><div class="sbr"><div class="sbn">Deobfuscation</div><div class="sbt"><div class="sbf" style="--w:85%"></div></div><div class="sbp">85%</div></div><div class="sbr"><div class="sbn">Process Tree Analysis</div><div class="sbt"><div class="sbf" style="--w:82%"></div></div><div class="sbp">82%</div></div></div></div></div>
+    <div class="st"><div class="stn">05</div><div class="stc"><div class="sth"><div class="stt">Expert Capstone</div><div class="str">Digital Forensics · ~279 hrs</div></div><div class="sbars"><div class="sbr"><div class="sbn">Log Querying (KQL)</div><div class="sbt"><div class="sbf" style="--w:98%"></div></div><div class="sbp">98%</div></div><div class="sbr"><div class="sbn">Forensic Timeline Build</div><div class="sbt"><div class="sbf" style="--w:95%"></div></div><div class="sbp">95%</div></div><div class="sbr"><div class="sbn">Insider Threat Analysis</div><div class="sbt"><div class="sbf" style="--w:90%"></div></div><div class="sbp">90%</div></div><div class="sbr"><div class="sbn">Evidence Chain of Custody</div><div class="sbt"><div class="sbf" style="--w:92%"></div></div><div class="sbp">92%</div></div><div class="sbr"><div class="sbn">Hypothesis-Driven Hunting</div><div class="sbt"><div class="sbf" style="--w:96%"></div></div><div class="sbp">96%</div></div></div></div></div>
+  </div>
+</section>
+
+<section id="cta">
+  <div class="cta-glow"></div>
+  <div class="ctac">
+    <span class="ctag">Ready to Begin?</span>
+    <h2 class="ctit">Start Your<br><em>Cyber Career</em> Path Today</h2>
+    <p class="csub">By the end of this journey — 750+ hours of real investigation work — you'll possess the cognitive flexibility to outwit sophisticated adversaries.</p>
+    <div class="btn-actions" style="justify-content:center">
+      <button class="btn-primary" onclick="showDetail('soc')">Begin as SOC Analyst</button>
+      <button class="btn-secondary" onclick="scrollToSec('careers')">Explore All Paths</button>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="fl">KC7</div>
+  <div class="ft">Cyber Defense Academy &nbsp;|&nbsp; Intelligence-Driven Training</div>
+  <div class="fn">Aligned with NICE Cybersecurity Workforce Framework<br>PD-WRL-001 · 002 · 003 · 006 · 007 · IN-WRL-002</div>
+</footer>
+</div><!-- /home-page -->
+
+<!-- DETAIL PAGE -->
+<div id="detail-page" class="page">
+  <div class="detail-wrapper">
+    <div class="detail-sidebar" id="detail-sidebar"></div>
+    <div class="detail-main" id="detail-main"></div>
+  </div>
+</div>
+
+<script>
+const paths={
+  soc:{id:'soc',stage:'Stage 01',icon:'🖥️',color:'#00E5FF',role:'SOC Analyst',nist:'NICE PD-WRL-001',nistFull:'Defensive Cybersecurity',hours:'~172 hrs',moduleCount:12,cert:'KC7 Certified SOC Analyst — Tier 1',
+    desc:'As a SOC Analyst, you will learn how to identify basic signs of compromise and turn investigative questions into data queries. We walk you through every step of the investigation, teaching you how to form a hypothesis, follow evidence, and think through an attack systematically.',
+    employers:['Monitor SIEM dashboards and security alert queues','Triage and categorise incoming security events by severity','Write basic KQL queries to search and filter log data','Identify phishing emails, malicious URLs, and common attack indicators','Perform basic IOC lookups using VirusTotal','Document findings clearly and escalate confirmed incidents to Tier 2','Understand the Cyber Kill Chain and common attacker entry points','Follow incident response playbooks for known alert types'],
+    phases:[
+      {label:'Phase 1 — Foundational',cls:'psep-1',modules:[
+        {num:'01',name:'KQL 101: An Intro to Kusto Query Language',dur:'1h 20m',diff:'Easy',dc:'diff-easy',obj:['Understand data in tables, navigate columns and rows','Filter data using where, contains, and has','Use logical operators to build precise queries','Write efficient KQL queries to extract security data'],tags:['Querying Logs'],why:'Querying logs is the fundamental skill for the Find phase. This module teaches players how to efficiently parse data to spot the lowest levels of the Pyramid of Pain to initiate triage.'},
+        {num:'02',name:'A Rap Beef: An Intro to Security Investigations',dur:'50m',diff:'Easy',dc:'diff-easy',obj:['How to identify elements of a phishing campaign','How to interpret Security Logs to identify malicious activity','How to investigate a basic cybersecurity intrusion'],tags:['Understanding Why Attackers Attack'],why:'Introduces analysts to the Delivery phase of the Kill Chain, establishing a baseline for daily SOC triage.'},
+        {num:'03',name:'CloutHaus: Social Media leads to Compromise',dur:'4h',diff:'Easy',dc:'diff-easy',obj:['Identify phishing and spear-phishing tactics','Investigate malicious email forwarding rules and inbox filters','Use KQL to investigate security incidents','Learn the impact of missing MFA'],tags:['Recognizing Common Entry Points','Understanding Why Attackers Attack'],why:'Phishing and account takeovers are the most frequent SOC alerts. Investigating malicious email rules builds vital triage skills.'},
+        {num:'04',name:'Titan Shield: A showcase of Microsoft Defender XDR',dur:'6h',diff:'Easy',dc:'diff-easy',obj:['Use Microsoft Defender XDR to research file hashes and get threat actor attribution','Pivot from an EDR alert to uncover a larger compromise','Recognize reconnaissance activity in inbound network logs','Attribute attacks to known threat actors using threat intelligence'],tags:['Mapping Attacker TTPs','Using Threat Intelligence Feeds','Clustering Related Attacks'],why:'Mastering commercial XDR platforms to achieve threat actor attribution is a core modern SOC workflow.'}
+      ]},
+      {label:'Phase 2 — Intermediate',cls:'psep-2',modules:[
+        {num:'05',name:'KQL 201: An Intermediary Course on KQL',dur:'16h 40m',diff:'Moderate',dc:'diff-moderate',obj:['Filter events by date ranges using datetime() and ago()','Group events into time buckets with bin()','Use summarize with count(), dcount(), min(), max()','Detect password spray attacks by analyzing failed login patterns'],tags:['Querying Logs'],why:'Equips the analyst to spot deviations from baselines across large log sets, detecting credential reuse and exploitation.'},
+        {num:'06',name:'Krusty Krab: An Intro to Pivoting and Analysis',dur:'22h 54m',diff:'Moderate',dc:'diff-moderate',obj:['Apply foundational security analysis skills to analyze log data','Pivot between datasets using indicators or patterns of interest','Identify TTPs based on observed threat activity','Cluster patterns of threat activity based on adversary tradecraft overlaps'],tags:['Scoping Investigations','Reconstructing Attack Timelines','What Controls Miss','How Controls Stop Attacks'],why:'Teaches the crucial SOC skill of safely pivoting from one indicator to another and understanding why layered defenses fail.'},
+        {num:'07',name:'Turkey Bowl',dur:'13h 20m',diff:'Moderate',dc:'diff-moderate',obj:['How to identify elements of exfiltration','How to interpret Process Events to identify malicious activity','How to navigate command line arguments'],tags:['Mapping Attacker TTPs'],why:'SOC analysts frequently evaluate endpoint alerts; understanding process trees ensures they can triage malware Installation accurately.'},
+        {num:'08',name:'French Socksess Story',dur:'1h 20m',diff:'Moderate',dc:'diff-moderate',obj:['Trace data staging and exfiltration using bitsadmin and WinRAR','Identify credential dumping tools (LaZagne)','Recognize C2 channels (dnscat2 over DNS)','Pivot across tables using KQL lookup and let statements'],tags:['Identifying Lateral Movement','Identifying C2 Activity','Identifying Data Exfiltration','Mapping Attacker TTPs'],why:'Teaches responders how to track Living-off-the-Land (LOLBins) binaries during an active breach triage.'}
+      ]},
+      {label:'Phase 3 — Advanced',cls:'psep-3',modules:[
+        {num:'09',name:'Whiskermania: An Intro to Network Concepts',dur:'8h 59m',diff:'Challenging',dc:'diff-challenging',obj:['Explain network segmentation and VLANs','Map IP address ranges to network zones','Recognize common port numbers and services','Recognize C2 beaconing patterns in network traffic'],tags:['Analyzing Network Protocols','Understanding Network Communication'],why:'SOC analysts must understand network topography to accurately triage alerts and map the Delivery and C2 phases.'},
+        {num:'10',name:'Dai Wok Foods: A Challenging Culinary Mystery',dur:'37h 20m',diff:'Challenging',dc:'diff-challenging',obj:['Use multiple techniques to track APTs','Use VirusTotal to identify threat actors','Trace reply-to email manipulation across multiple sender addresses','Recognize supply chain compromise through trusted partners'],tags:['Scoping Investigations','Spotting Abnormal Activity','Identifying C2 Activity','Mapping Attacker TTPs'],why:'Deep OSINT analysis tracing sophisticated, multi-tiered adversary setups from the reconnaissance phase.'},
+        {num:'11',name:'Balloons Over Iowa',dur:'5h',diff:'Challenging',dc:'diff-challenging',obj:['Trace a phishing attack from email to compromise','Pivot across data sources to follow an attacker','Identify command and control activity','Scope the blast radius of an incident','Map attacker activity to the kill chain'],tags:['Pivoting Across Data','Mapping Attacker TTPs','Identifying Data Exfiltration'],why:'Forces SOC Analysts to map a complete Kill Chain to effectively scope the blast radius before handing off to IR.'}
+      ]},
+      {label:"Phase 4 — Capstone · \"Don't Bother\"",cls:'psep-4',modules:[
+        {num:'12',name:'MCJ Walker: An Impossible Identity Crisis',dur:'70h',diff:"Don't Bother",dc:'diff-dont',obj:['Solve a highly complex cyber mystery with sparse clues','Write complex KQL queries to hunt through noise','Form and test competing hypotheses rigorously'],tags:['Forming and Testing Hypotheses','Reconstructing Attack Timelines','Prioritizing What to Investigate First','Spotting Anomalies from Baselines'],why:'The ultimate test of a SOC Analyst\'s intuition and mastery of KQL logic in a low-signal, high-noise environment. Built for DEF CON 2023.'}
+      ]}
+    ]
+  },
+  ir:{id:'ir',stage:'Stage 02',icon:'🚨',color:'#29B6F6',role:'Incident Responder',nist:'NICE PD-WRL-003',nistFull:'Incident Response',hours:'~227 hrs',moduleCount:12,cert:'KC7 Certified Incident Responder — Tier 1',
+    desc:'As an Incident Responder, you will execute the Fix and Finish phases of the F3EAD cycle, operating through the Incident-Response Cycle (Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned) to reconstruct the full Cyber Kill Chain of a breach and eradicate footholds.',
+    employers:['Contain active intrusions and prevent lateral spread','Reconstruct full attack timelines using SIEM and EDR data','Identify and eradicate threat actor footholds across an environment','Map attacker actions to MITRE ATT&CK framework','Triage ransomware incidents and manage crisis response','Document and report incident findings to stakeholders','Perform root cause analysis on confirmed breaches','Coordinate remediation and recovery activities'],
+    phases:[
+      {label:'Phase 1 — Foundational',cls:'psep-1',modules:[
+        {num:'01',name:'KQL 101: An Intro to Kusto Query Language',dur:'1h 20m',diff:'Easy',dc:'diff-easy',obj:['Filter data using where, build queries with logical operators','Extract relevant security data from log tables'],tags:['Querying Logs'],why:'An incident responder must know how to quickly query SIEM data during a live incident to locate the adversary\'s footprint.'},
+        {num:'02',name:"Jojo's Hospital: A Ransomware Investigation",dur:'2h 30m',diff:'Easy',dc:'diff-easy',obj:['Interpret Security Logs to identify malicious activity','Use Azure Data Explorer (ADX) and KQL to query logs','Formulate an analytical question and answer it using data'],tags:['Mapping Attacker TTPs','Understanding Why Attackers Attack','Pivoting Across Data'],why:'An accessible introduction to crisis management and rapid ransomware containment.'},
+        {num:'03',name:'A Scandal in Valdoria: A Political Mystery',dur:'6h 40m',diff:'Easy',dc:'diff-easy',obj:['Correlate events to construct comprehensive attack timelines','Interpret PowerShell scripts and malicious commands','Apply time-based filters to investigate suspicious indicators'],tags:['Recognizing Email Attack Chains','Mapping Attacker TTPs','Identifying C2 Activity','Identifying Data Exfiltration'],why:'Moving beyond a single log, responders must build a timeline to understand how the attacker achieved their goals.'},
+        {num:'04',name:'Solvi Systems: A tale of Supply Chains and ICS',dur:'2h 30m',diff:'Easy',dc:'diff-easy',obj:['Investigate a supply chain attack involving ICS','Understand downstream impact from ICS software attacks','Combine multiple data sources to establish a timeline from recon to exfiltration'],tags:['Triaging Alerts','Finding Persistence Mechanisms','Mapping Attacker TTPs','Detecting Network Compromise'],why:'Supply chain attacks require responders to look outside their immediate perimeter to eradicate threats successfully.'}
+      ]},
+      {label:'Phase 2 — Intermediate',cls:'psep-2',modules:[
+        {num:'05',name:'Critical Compromise In Chicago — ICS',dur:'14h 10m',diff:'Moderate',dc:'diff-moderate',obj:['Trace malware execution from phishing through C2 beaconing','Identify lateral movement using PsExec and admin credentials','Recognize destructive malware (KillDisk) used to wipe systems','Find anti-forensic techniques like event log clearing'],tags:['Spotting Abnormal Activity','Pivoting Across Data','Reading Process Trees','Finding Persistence Mechanisms','Mapping Attacker TTPs'],why:'Introduces responders to highly destructive wiper malware targeting SCADA systems.'},
+        {num:'06',name:'AzureCrest — The Full Version',dur:'45h',diff:'Moderate',dc:'diff-moderate',obj:['Map attacker actions to the MITRE ATT&CK framework','Investigate phishing campaigns impersonating trusted partners','Identify SSH-based command and control connections','Follow data staging, compression, and exfiltration','Analyze ransomware deployment and impact indicators'],tags:['Scoping Investigations','Reconstructing Attack Timelines','Triaging Alerts','Mapping Attacker TTPs'],why:'A deep-dive into full attack reconstruction, ensuring the Finish phase completely removes the threat.'},
+        {num:'07',name:'French Socksess Story',dur:'1h 20m',diff:'Moderate',dc:'diff-moderate',obj:['Trace data staging using bitsadmin and WinRAR','Identify credential dumping tools (LaZagne)','Recognize C2 channels (dnscat2)','Trace initial access through web application abuse'],tags:['Identifying Lateral Movement','Identifying C2 Activity','Identifying Data Exfiltration','Reconstructing Attack Timelines'],why:'Responders must track exact tool execution during Actions on Objective to prove what data was stolen.'}
+      ]},
+      {label:'Phase 3 — Advanced',cls:'psep-3',modules:[
+        {num:'08',name:'System Shutdown at Azure Crest! (Short Version)',dur:'1h 30m',diff:'Challenging',dc:'diff-challenging',obj:['Interpret Security Logs to identify malicious activity','Use ADX and KQL to query logs','Interpret PowerShell scripts during a ransomware attack'],tags:['Understanding Why Attackers Attack'],why:'Drops players into a high-pressure environment testing rapid identification and initial containment skills.'},
+        {num:'09',name:'Empire Health',dur:'1h 30m',diff:'Challenging',dc:'diff-challenging',obj:['Analyze and contain a sophisticated malware campaign','Trace the phishing campaign to its origin','Protect critical infrastructure and maintain system integrity'],tags:['Documenting Your Work'],why:'Focuses on the Containment and Lessons Learned (documentation) aspects of the IR cycle.'},
+        {num:'10',name:'Inside Encryptodera: An Insider Threat Scenario',dur:'25h',diff:'Challenging',dc:'diff-challenging',obj:['Decode and interpret encoded malicious commands','Investigate insider threat behaviors and the risks they pose','Detect and investigate ransomware attacks','Detect anomalous activity in network flow/PCAP data'],tags:['Forming and Testing Hypotheses','Detecting Network Compromise','Detecting Identity Abuse'],why:'Insider threats bypass the perimeter. Responders must leverage full network and host flow logs to prove malicious internal actions.'}
+      ]},
+      {label:'Phase 4 — Capstone · Hard',cls:'psep-4',modules:[
+        {num:'11',name:'World Domination Nation',dur:'12h 40m',diff:'Hard',dc:'diff-hard',obj:['Use KQL to investigate a ransomware attack','Investigate an attack relying heavily on lateral movement','Track privilege escalation to identify full scope of compromise'],tags:['Spotting Abnormal Activity','Mapping Attacker TTPs','Identifying Lateral Movement'],why:'Eradication requires mastering the Installation and Lateral Movement phases to cut off access completely.'},
+        {num:'12',name:'Spooky Sweets: Sweet Sweet Pivots',dur:'113h 20m',diff:'Hard',dc:'diff-hard',obj:['Use multiple data sets to answer targeted questions','Investigate cyber activity across logs','Track APTs using multiple techniques','Make recommendations on actions a company can take to protect itself'],tags:['Reconstructing Attack Timelines','Spotting Abnormal Activity','Mapping Attacker TTPs','Identifying Lateral Movement'],why:'The ultimate IR capstone. Analysts must translate a massive 113-hour technical investigation into strategic Lessons Learned and actionable recommendations.'}
+      ]}
+    ]
+  },
+  cti:{id:'cti',stage:'Stage 03',icon:'🔭',color:'#00FF88',role:'Threat Intelligence Analyst',nist:'NICE PD-WRL-006',nistFull:'Threat Analysis',hours:'~282 hrs',moduleCount:12,cert:'KC7 Certified Threat Intelligence Analyst — Tier 1',
+    desc:'As a Threat Intelligence Analyst, you will monitor the threat landscape using open-source intelligence and execute the Exploit, Analyze, and Disseminate phases of F3EAD. You will use the Diamond Model to cluster adversary activities, map infrastructure, and elevate defenses up the Pyramid of Pain by tracking attacker TTPs.',
+    employers:['Gather and analyze threat intelligence from open-source feeds','Track Advanced Persistent Threat (APT) groups and their TTPs','Build threat actor profiles using the Diamond Model','Map attacker infrastructure using PassiveDNS pivoting','Attribute attacks to known threat actors and nation-state groups','Produce and disseminate threat intelligence reports','Identify emerging threats before they impact the organization','Cluster disparate attacks into organized threat actor activity groups'],
+    phases:[
+      {label:'Phase 1 — Foundational',cls:'psep-1',modules:[
+        {num:'01',name:'VirusTotal Fundamentals',dur:'3h',diff:'Easy',dc:'diff-easy',obj:['Recognize benign vs. malicious files based on report details','Pivot from indicators to learn more about a threat','Understand Code-Signing Certificates','How to contribute to the VirusTotal community'],tags:['Identifying Malware Types'],why:'The foundational OSINT tool for Threat Intel. Teaches safe pivoting on atomic indicators (hashes) to uncover adversary infrastructure.'},
+        {num:'02',name:"Decoding101: A Beginner's Guide to Decoding",dur:'1h',diff:'Easy',dc:'diff-easy',obj:['Recognize common encodings (binary, decimal, hexadecimal, Base64)','Use CyberChef to build, chain, and auto-detect decoding recipes','Decode basic transformations including ROT13 and XOR-encrypted data','Unravel multi-layered encodings used by threat actors'],tags:['Deobfuscating Malicious Code'],why:'Intel analysts must parse obfuscated command lines to extract capabilities and IOCs for the Exploit phase.'},
+        {num:'03',name:'A Scandal in Valdoria: A Political Mystery',dur:'6h 40m',diff:'Easy',dc:'diff-easy',obj:['Correlate events to construct comprehensive attack timelines','Interpret malicious scripts and PowerShell commands','Apply time-based filters to investigate suspicious indicators'],tags:['Recognizing Email Attack Chains','Mapping Attacker TTPs','Identifying C2 Activity','Identifying Data Exfiltration'],why:'Introduces moving up the Pyramid of Pain by converting raw events into structured timelines detailing adversary Capabilities.'},
+        {num:'04',name:'Titan Shield: A showcase of Microsoft Defender XDR',dur:'6h',diff:'Easy',dc:'diff-easy',obj:['Use Defender XDR to research file hashes and get threat actor attribution','Attribute attacks to known threat actors using threat intelligence','Recognize reconnaissance activity in inbound network logs'],tags:['Mapping Attacker TTPs','Using Threat Intelligence Feeds','Clustering Related Attacks'],why:'Trains analysts to leverage commercial XDR platforms to achieve accurate threat actor attribution across the Kill Chain.'},
+        {num:'05',name:'Valdoria Votes: A Political Mystery (Part 2)',dur:'4h 10m',diff:'Easy',dc:'diff-easy',obj:['Investigate emerging anomalous threats and disinformation campaigns','Make decisions on when to escalate vs. continue investigating'],tags:['Choosing the Right Data Source'],why:'Teaches analysts to track disinformation-adjacent adversary behaviors and make decisions on escalation.'}
+      ]},
+      {label:'Phase 2 — Intermediate',cls:'psep-2',modules:[
+        {num:'06',name:'Envolve Labs: With a Twist!',dur:'5h',diff:'Moderate',dc:'diff-moderate',obj:['Pivot between datasets using indicators or patterns of interest','Identify TTPs based on observed threat activity','Cluster patterns of threat activity based on overlaps in adversary tradecraft'],tags:['Clustering Related Attacks'],why:'The absolute core function of threat intelligence — clustering disparate attacks into Diamond Model activity groups based on TTPs.'},
+        {num:'07',name:'HopsNStuff: An Easter APT Hunt',dur:'3h 40m',diff:'Moderate',dc:'diff-moderate',obj:['Start investigations from security alerts on quarantined files','Decode base64-encoded PowerShell commands to understand attacker actions','Map attacker infrastructure using PassiveDNS pivoting','Attribute attacks to known APT groups using public threat intelligence'],tags:['Scoping Investigations','Reconstructing Attack Timelines','Recognizing Email Attack Chains','Identifying C2 Activity'],why:'Pushes the analyst to map external Infrastructure using PassiveDNS pivoting, shifting defenses up the Pyramid of Pain.'},
+        {num:'08',name:'Castle & Sand: A Beachy Case of Ransomware',dur:'95h 49m',diff:'Moderate',dc:'diff-moderate',obj:['Use Azure Data Explorer to investigate cyber activity','Use multiple data sets to answer targeted questions','Track APTs using multiple techniques','Use third-party data sets to discover attacker information','Make recommendations for protecting the company'],tags:['Scoping Investigations','Reconstructing Attack Timelines','Using Threat Intelligence Feeds','Mapping Attacker TTPs'],why:'Teaches the extraction of strategic recommendations and intelligence from tactical ransomware activity (Dissemination phase).'}
+      ]},
+      {label:'Phase 3 — Advanced',cls:'psep-3',modules:[
+        {num:'09',name:'Dai Wok Foods: A Challenging Culinary Mystery',dur:'37h 20m',diff:'Challenging',dc:'diff-challenging',obj:['Use VirusTotal to identify threat actors from file hashes','Trace reply-to email manipulation across multiple sender addresses','Recognize supply chain compromise through trusted partners','Correlate authentication logs with geographic anomalies'],tags:['Scoping Investigations','Spotting Abnormal Activity','Identifying C2 Activity','Mapping Attacker TTPs'],why:'Deep OSINT analysis tracing sophisticated, multi-tiered adversary setups and early reconnaissance gathering.'},
+        {num:'10',name:'A Storm Is Brewing In the Lab',dur:'70h 40m',diff:'Challenging',dc:'diff-challenging',obj:['Use Synapse to lift, filter, and pivot data','Learn how to label nodes to form an analytical layer','Use multiple techniques to track APTs','Make recommendations for protecting the organization'],tags:['Correlating Across Log Sources','Mapping Attacker TTPs'],why:'Mimics how elite CTI teams execute the Disseminate phase using dedicated graph-based intelligence systems (Synapse).'},
+        {num:'11',name:'Scholomance: Secrets and Lateral Movement',dur:'53h 4m',diff:'Challenging',dc:'diff-challenging',obj:['Track APT activity across email, web, and server logs','Use multiple data sets to answer targeted questions','Use third-party data sets to discover insights about attackers'],tags:['Prioritizing What to Investigate First','Pivoting Across Data','Identifying Lateral Movement'],why:'Extracting TTP intelligence from highly complex lateral movement requires advanced correlation and scoping skills.'}
+      ]},
+      {label:'Phase 4 — Capstone · Hard',cls:'psep-4',modules:[
+        {num:'12',name:'Sunlands: A Tough Space Investigation',dur:'33h',diff:'Hard',dc:'diff-hard',obj:['Identify foreign infrastructure through domain analysis','Trace watering hole attacks used to lure employees','Follow privilege escalation from user to domain admin','Pivot across attacker infrastructure to map full scope','Track data staging and exfiltration of national secrets'],tags:['Scoping Investigations','Mapping Attacker TTPs','Identifying Lateral Movement','Understanding Active Directory'],why:'Advanced geopolitical threat tracking capstone. Pushes analysts to leverage every OSINT and pivoting skill to map persistent, state-sponsored data staging.'}
+      ]}
+    ]
+  },
+  va:{id:'va',stage:'Stage 04',icon:'🛡️',color:'#FFCA28',role:'Vulnerability Analyst',nist:'NICE PD-WRL-007',nistFull:'Vulnerability Analysis',hours:'~136 hrs',moduleCount:11,cert:'KC7 Certified Vulnerability Analyst — Tier 1',
+    desc:"As a Vulnerability Analyst, you will focus on asset-centric targeting and the Preparation phase of the IR cycle. You will identify weaknesses in systems, networks, protocols, and supply chains to disrupt the Exploitability phase of an adversary's Kill Chain.",
+    employers:['Perform vulnerability scans and assess risk across the environment','Map the attack surface and identify weaknesses before adversaries do','Evaluate defense-in-depth architectures for gaps','Assess supply chain and third-party risk to the organization','Identify and remediate web-facing vulnerabilities','Explain why existing detections fail and recommend improvements','Track publicly known vulnerabilities and map them to internal assets','Coordinate with IT teams to prioritize and track remediation'],
+    phases:[
+      {label:'Phase 1 — Foundational',cls:'psep-1',modules:[
+        {num:'01',name:'KQL 101: An Intro to Kusto Query Language',dur:'1h 20m',diff:'Easy',dc:'diff-easy',obj:['Understand data in tables, extract security data','Filter log files using where, contains, and has'],tags:['Querying Logs'],why:'Searching logs allows analysts to verify if a known vulnerability has been actively exploited in the environment.'},
+        {num:'02',name:'CloutHaus: Social Media leads to Compromise',dur:'4h',diff:'Easy',dc:'diff-easy',obj:["Learn the impact of MFA — and what happens when it's missing",'Investigate malicious email forwarding rules and inbox filters','Understand how oversharing and public data fuel targeted attacks'],tags:['Recognizing Common Entry Points','Understanding Why Attackers Attack'],why:'Missing MFA is a core architectural vulnerability that analysts must identify and remediate across architectures.'},
+        {num:'03',name:'Solvi Systems: A tale of Supply Chains and ICS',dur:'2h 30m',diff:'Easy',dc:'diff-easy',obj:['Investigate a supply chain attack involving ICS software','Understand downstream impact from ICS software attacks','Combine multiple data sources to establish a detailed timeline'],tags:['Triaging Alerts','Finding Persistence Mechanisms','Detecting Network Compromise'],why:'Vulnerabilities are inherited. This module highlights systemic risks from third-party supply chains, expanding asset-centric targeting scope.'},
+        {num:'04',name:"Jojo's Hospital: A Ransomware Investigation",dur:'2h 30m',diff:'Easy',dc:'diff-easy',obj:['Interpret Security Logs to identify evidence of malicious activity','Formulate analytical questions and answer them using data'],tags:['Mapping Attacker TTPs','Understanding Why Attackers Attack','Pivoting Across Data'],why:'Shows the analyst how devastating the exploitation of vulnerable hospital infrastructure can be, emphasizing proactive patching.'}
+      ]},
+      {label:'Phase 2 — Intermediate',cls:'psep-2',modules:[
+        {num:'05',name:'Krusty Krab: An Intro to Pivoting and Analysis',dur:'22h 54m',diff:'Moderate',dc:'diff-moderate',obj:['Analyze security logs to identify TTPs','Pivot between datasets using indicators or patterns','Cluster patterns of threat activity based on adversary tradecraft'],tags:['Scoping Investigations','Reconstructing Attack Timelines','What Controls Miss','How Controls Stop Attacks'],why:'Teaches analysts why detections fail when vulnerabilities are actively exploited and how to measure defense-in-depth.'},
+        {num:'06',name:'Frognado in Valdoria: A Political Mystery',dur:'26h 40m',diff:'Moderate',dc:'diff-moderate',obj:['Investigate website defacement traced to compromised credentials','Identify internal spearphishing campaigns tailored to employee roles','Recognize credential harvesting through fake login pages','Follow email collection, staging, and chunked exfiltration'],tags:['Scoping Investigations','Forming and Testing Hypotheses','Recognizing Email Attack Chains','Mapping Attacker TTPs'],why:'Focuses heavily on web-facing vulnerabilities, training analysts to secure public perimeter assets.'},
+        {num:'07',name:'AzureCrest — The Full Version',dur:'45h',diff:'Moderate',dc:'diff-moderate',obj:['Map actions to MITRE ATT&CK throughout an investigation','Identify SSH-based command and control connections','Recognize database hunting and collection techniques'],tags:['Scoping Investigations','Reconstructing Attack Timelines','Mapping Attacker TTPs'],why:'Demonstrates how unpatched protocols (like open SSH) are leveraged by attackers to scale an attack across an environment.'}
+      ]},
+      {label:'Phase 3 — Advanced',cls:'psep-3',modules:[
+        {num:'08',name:'Whiskermania: An Intro to Network Concepts',dur:'8h 59m',diff:'Challenging',dc:'diff-challenging',obj:['Explain network segmentation and VLANs','Map IP address ranges to network zones','Recognize common port numbers and associated services','Recognize C2 beaconing patterns in network traffic'],tags:['Analyzing Network Protocols','Understanding Network Communication','Pivoting Across Data'],why:"A deep understanding of network architectures is required to assess an asset's attack surface and deny adversaries Delivery vectors."},
+        {num:'09',name:'Scholomance: Secrets and Lateral Movement',dur:'53h 4m',diff:'Challenging',dc:'diff-challenging',obj:['Track APT activity across email, web, and server logs','Use multiple data sets to answer targeted questions','Decide when to act vs. continue investigating'],tags:['Prioritizing What to Investigate First','Pivoting Across Data','Identifying Lateral Movement'],why:'Focuses on uncovering architectural misconfigurations that allow attackers to move laterally undetected.'},
+        {num:'10',name:'Dai Wok Foods: A Challenging Culinary Mystery',dur:'37h 20m',diff:'Challenging',dc:'diff-challenging',obj:['Recognize supply chain compromise through trusted partners','Trace attacker reconnaissance on a company website','Correlate authentication logs with geographic anomalies'],tags:['Scoping Investigations','Spotting Abnormal Activity','Mapping Attacker TTPs'],why:'Requires the analyst to measure the effectiveness of architectures against complex, third-party reconnaissance and vulnerabilities.'}
+      ]},
+      {label:"Phase 4 — Capstone · \"Don't Bother\"",cls:'psep-4',modules:[
+        {num:'11',name:"A Rap Steak: A Tough Musical Affair",dur:'25h',diff:"Don't Bother",dc:'diff-dont',obj:['Investigate TTPs of one threat actor operating against one victim','Understand the exploitation of remote services as an initial access vector','Interpret Security Logs to identify evidence of malicious activity'],tags:['Understanding Web Exploitation Outcomes','Spotting Successful Exploitation'],why:'The ultimate test. Forces analysts to map the devastating impact of unpatched remote services against highly sophisticated actors with zero hand-holding.'}
+      ]}
+    ]
+  },
+  ma:{id:'ma',stage:'Stage 05',icon:'🧬',color:'#FF7043',role:'Malware Analyst',nist:'NICE PD-WRL-001 / 003',nistFull:'Defensive Cybersecurity / Incident Response',hours:'~136 hrs',moduleCount:12,cert:'KC7 Certified Malware Analyst — Tier 1',
+    desc:'As a Malware Analyst, you will analyze the Capabilities vertex of the Diamond Model. You will use static and dynamic analysis to understand how malware functions, how it is obfuscated, and how it executes the Exploitation and Installation phases of the Kill Chain natively on host endpoints.',
+    employers:['Perform static analysis on suspicious files to determine malicious intent','Unpack and decode obfuscated payloads using tools like CyberChef','Analyze process trees to understand how malware executes natively','Identify Living-off-the-Land binaries (LOLBins) used by attackers','Recognize malware families and their behavioral signatures','Trace ransomware dropper mechanisms and initial access vectors','Identify anti-forensic techniques employed by malware authors','Contribute malware indicators and IOCs to threat intelligence feeds'],
+    phases:[
+      {label:'Phase 1 — Foundational',cls:'psep-1',modules:[
+        {num:'01',name:"Decoding101: A Beginner's Guide to Decoding",dur:'1h',diff:'Easy',dc:'diff-easy',obj:['Recognize common encodings (binary, decimal, hexadecimal, Base64)','Use CyberChef to decode multi-layered transformations','Analyze obfuscated scripts without running them','Unravel multi-step encodings used by threat actors'],tags:['Deobfuscating Malicious Code'],why:'Attackers obfuscate payloads during Weaponization. Analysts must master static analysis tools like CyberChef to peel back encoding layers safely.'},
+        {num:'02',name:'VirusTotal Fundamentals',dur:'3h',diff:'Easy',dc:'diff-easy',obj:['Recognize benign vs. malicious files from report details','Pivot from indicators to learn more about a threat','Understand Code-Signing Certificates and what file details can be trusted'],tags:['Identifying Malware Types'],why:'Essential for basic static analysis to determine file reputation before executing malware in a sandbox.'},
+        {num:'03',name:'A Rap Beef: An Intro to Security Investigations',dur:'50m',diff:'Easy',dc:'diff-easy',obj:['Identify elements of a phishing campaign','Interpret Security Logs to identify malicious activity','Investigate a basic cybersecurity intrusion'],tags:['Understanding Why Attackers Attack'],why:'Gives the analyst their first look at how a malicious payload executes and drops on a system after delivery.'},
+        {num:'04',name:'KQL 101: An Intro to Kusto Query Language',dur:'1h 20m',diff:'Easy',dc:'diff-easy',obj:['Understand data in tables, extract security data','Filter log files using where, contains, and has'],tags:['Querying Logs'],why:'Searching logs allows malware analysts to verify if a known malicious payload has been actively executed in the environment.'}
+      ]},
+      {label:'Phase 2 — Intermediate',cls:'psep-2',modules:[
+        {num:'05',name:'Turkey Bowl',dur:'13h 20m',diff:'Moderate',dc:'diff-moderate',obj:['Identify elements of exfiltration','Interpret Process Events to identify malicious activity','Navigate command line arguments to understand attacker actions'],tags:['Mapping Attacker TTPs'],why:'Teaches basic dynamic analysis behavior by tracking how malware executes natively on a host and spawns process trees.'},
+        {num:'06',name:'HopsNStuff: An Easter APT Hunt',dur:'3h 40m',diff:'Moderate',dc:'diff-moderate',obj:['Decode base64-encoded PowerShell commands to understand attacker actions','Trace malware from initial file creation through process execution to C2','Recognize watering hole attacks through outbound browsing patterns'],tags:['Scoping Investigations','Reconstructing Attack Timelines','Identifying C2 Activity'],why:'Bridges the gap between static decoding and tracking dynamic file execution across a network.'},
+        {num:'07',name:'French Socksess Story',dur:'1h 20m',diff:'Moderate',dc:'diff-moderate',obj:['Trace data staging using legitimate Windows tools (bitsadmin)','Identify credential dumping (LaZagne) and its targets','Pivot across tables using KQL lookup and let statements'],tags:['Identifying Lateral Movement','Identifying C2 Activity','Reconstructing Attack Timelines'],why:'Understanding Living-off-the-Land binaries (LOLBins) is critical when evaluating how a payload abuses native system tools.'},
+        {num:'08',name:'AzureCrest — The Full Version',dur:'45h',diff:'Moderate',dc:'diff-moderate',obj:['Follow data staging, compression, and exfiltration','Analyze ransomware deployment and impact indicators','Trace file downloads through browser process analysis'],tags:['Scoping Investigations','Reconstructing Attack Timelines','Mapping Attacker TTPs'],why:'Exposes the analyst to the full lifecycle of ransomware payload execution and staging methodologies on the host system.'}
+      ]},
+      {label:'Phase 3 — Advanced',cls:'psep-3',modules:[
+        {num:'09',name:'Critical Compromise In Chicago — ICS',dur:'14h 10m',diff:'Challenging',dc:'diff-challenging',obj:['Trace malware execution from phishing through C2 beaconing','Recognize destructive malware (KillDisk) used to wipe systems','Attribute attacks to nation-state actors using threat intelligence'],tags:['Spotting Abnormal Activity','Reading Process Trees','Mapping Attacker TTPs'],why:'Exposes analysts to the full lifecycle of complex, destructive wiper payloads targeting SCADA environments.'},
+        {num:'10',name:'Inside Encryptodera: An Insider Threat Scenario',dur:'25h',diff:'Challenging',dc:'diff-challenging',obj:['Decode and interpret encoded malicious commands','Investigate insider threat behaviors','Detect and investigate ransomware attacks','Detect anomalous activity in network flow/PCAP data'],tags:['Forming and Testing Hypotheses','Detecting Network Compromise','Detecting Identity Abuse'],why:'Pushes the analyst to parse highly obfuscated, custom insider-threat scripts.'}
+      ]},
+      {label:'Phase 4 — Capstone · Hard',cls:'psep-4',modules:[
+        {num:'11',name:'Ship Ahoy! An Unusual Ransomware Investigation',dur:'11h',diff:'Hard',dc:'diff-hard',obj:['Investigate how a ransomware threat actor gained initial access','Analyze the dropper mechanism beyond the obvious payload'],tags:['Identifying Malware Types'],why:"Pushes the analyst past the obvious payload (ransomware) to forensically re-engineer the dropper's Weaponization and execution mechanics."},
+        {num:'12',name:'Spooky Sweets: Sweet Sweet Pivots',dur:'113h 20m',diff:'Hard',dc:'diff-hard',obj:['Use multiple data sets to answer targeted questions','Track APTs using multiple techniques','Investigate cyber activity across logs'],tags:['Reconstructing Attack Timelines','Spotting Abnormal Activity','Mapping Attacker TTPs','Identifying Lateral Movement'],why:'The ultimate malware capstone requiring the analyst to track advanced payload execution behaviors and lateral movement across a massive log dataset.'}
+      ]}
+    ]
+  },
+  df:{id:'df',stage:'Stage 06',icon:'🔬',color:'#FF6B35',role:'Digital Forensics Analyst',nist:'NICE PD-WRL-002 / IN-WRL-002',nistFull:'Digital Forensics / Digital Evidence Analysis',hours:'~279 hrs',moduleCount:12,cert:'KC7 Certified Digital Forensics Analyst — Tier 1',
+    desc:'As a Digital Forensics Analyst, you will deeply investigate digital devices to collect evidence and reconstruct timelines, executing the deep-dive analysis required during the Fix and Exploit phases of F3EAD, extracting host and network artifacts to prove unauthorized activities definitively.',
+    employers:['Reconstruct attack timelines from logs, disk artifacts, and memory','Collect and preserve digital evidence following chain of custody procedures','Identify and counter anti-forensic techniques (log clearing, timestomping)','Analyze full-content packet captures (PCAPs) for network-level evidence','Investigate insider threat cases using identity and behavioral logs','Produce forensic reports suitable for legal and executive consumption','Hunt for forensic anomalies in low-signal, high-noise environments','Provide expert evidence reconstruction in support of incident investigations'],
+    phases:[
+      {label:'Phase 1 — Foundational',cls:'psep-1',modules:[
+        {num:'01',name:'KQL 101: An Intro to Kusto Query Language',dur:'1h 20m',diff:'Easy',dc:'diff-easy',obj:['Filter data using where, build queries with logical operators','Extract relevant security data from log tables'],tags:['Querying Logs'],why:'Forensics in modern cloud/enterprise environments relies heavily on big data queries to locate digital evidence.'},
+        {num:'02',name:"Decoding101: A Beginner's Guide to Decoding",dur:'1h',diff:'Easy',dc:'diff-easy',obj:['Recognize encodings and decode multi-layered transformations','Analyze obfuscated scripts without running them'],tags:['Deobfuscating Malicious Code'],why:'Deep forensic extraction frequently requires unpacking hidden or encoded artifacts left behind on disk or in memory.'},
+        {num:'03',name:'A Scandal in Valdoria: A Political Mystery',dur:'6h 40m',diff:'Easy',dc:'diff-easy',obj:['Correlate events to construct comprehensive attack timelines','Interpret PowerShell scripts and malicious commands'],tags:['Recognizing Email Attack Chains','Mapping Attacker TTPs','Identifying C2 Activity'],why:'Building accurate timelines is the core foundation of proving when and how digital evidence was altered.'}
+      ]},
+      {label:'Phase 2 — Intermediate',cls:'psep-2',modules:[
+        {num:'04',name:'KQL 201: An Intermediary Course on KQL',dur:'16h 40m',diff:'Moderate',dc:'diff-moderate',obj:['Group events into time buckets with bin() to spot spikes in activity','Use summarize with count(), dcount(), min(), max()','Detect anomalous patterns by analyzing event frequency'],tags:['Querying Logs'],why:'Advanced query structuring is required to build comprehensive forensic timelines of activity and spot deviations.'},
+        {num:'05',name:'French Socksess Story',dur:'1h 20m',diff:'Moderate',dc:'diff-moderate',obj:['Trace data staging using bitsadmin/WinRAR','Identify credential dumping tools (LaZagne)','Reconstruct the full attack chain from initial access to exfiltration'],tags:['Identifying Lateral Movement','Identifying C2 Activity','Reconstructing Attack Timelines'],why:'Forensics requires granular proof of data theft. Analysts practice tracking exact tool execution to reconstruct the extortion timeline.'},
+        {num:'06',name:'Castle & Sand: A Beachy Case of Ransomware',dur:'95h 49m',diff:'Moderate',dc:'diff-moderate',obj:['Investigate cyber activity across email, web traffic, and server logs','Track APTs using multiple techniques','Use third-party data sets to discover attacker information'],tags:['Scoping Investigations','Reconstructing Attack Timelines','Using Threat Intelligence Feeds'],why:'Teaches the forensic reconstruction of events by correlating timestamped data across disparate server logs.'},
+        {num:'07',name:'Critical Compromise In Chicago — ICS',dur:'14h 10m',diff:'Moderate',dc:'diff-moderate',obj:['Find anti-forensic techniques like event log clearing','Identify credential theft through password file searches','Trace malware execution from phishing through C2 beaconing'],tags:['Spotting Abnormal Activity','Pivoting Across Data','Finding Persistence Mechanisms'],why:'Analysts must learn to preserve and recover evidence when attackers actively deploy anti-forensic techniques.'}
+      ]},
+      {label:'Phase 3 — Advanced',cls:'psep-3',modules:[
+        {num:'08',name:'Galaxy Neura',dur:'2h',diff:'Challenging',dc:'diff-challenging',obj:['Investigate suspicious activity targeting critical biotech research','Identify and track adversary TTPs to map the intrusion lifecycle','Uncover potential insider threats and assess impact of the breach','Piece together the attack timeline and determine the adversary\'s next move'],tags:['Prioritizing What to Investigate First'],why:'Reconstructing a breach requires deep artifact collection and behavioral timeline reconstruction to generate evidence of internal misuse.'},
+        {num:'09',name:'Inside Encryptodera: An Insider Threat Scenario',dur:'25h',diff:'Challenging',dc:'diff-challenging',obj:['Decode and interpret encoded malicious commands','Investigate insider threat behaviors and the risks they pose','Detect anomalous activity in network flow/PCAP data'],tags:['Forming and Testing Hypotheses','Detecting Network Compromise','Detecting Identity Abuse'],why:'Insider threat cases rely heavily on forensic scrutiny of identity logs and full-content PCAPs to legally prove malicious intent.'},
+        {num:'10',name:'Scholomance: Secrets and Lateral Movement',dur:'53h 4m',diff:'Challenging',dc:'diff-challenging',obj:['Track APT activity across email, web, and server logs','Use multiple data sets to answer targeted questions','Decide when to act vs. continue digging for evidence'],tags:['Prioritizing What to Investigate First','Pivoting Across Data','Identifying Lateral Movement'],why:'Teaches the forensic reconstruction of Lateral Movement by pulling digital artifacts from various server sources to prove unauthorized access.'}
+      ]},
+      {label:"Phase 4 — Capstone · Hard / \"Don't Bother\"",cls:'psep-4',modules:[
+        {num:'11',name:'Sunlands: A Tough Space Investigation',dur:'33h',diff:'Hard',dc:'diff-hard',obj:['Follow privilege escalation from user to domain admin','Identify persistence mechanisms and credential dumping','Pivot across attacker infrastructure to map full scope','Track data staging and exfiltration of national secrets'],tags:['Scoping Investigations','Mapping Attacker TTPs','Identifying Lateral Movement','Understanding Active Directory'],why:"An advanced forensics challenge mapping exactly when Installation (persistence) was established and tracking specific staging of national secrets."},
+        {num:'12',name:'MCJ Walker: An Impossible Identity Crisis',dur:'70h',diff:"Don't Bother",dc:'diff-dont',obj:['Solve a highly complex, anomalous cyber mystery with sparse clues','Write complex KQL queries to hunt through noise','Form and test competing hypotheses rigorously'],tags:['Forming and Testing Hypotheses','Reconstructing Attack Timelines','Prioritizing What to Investigate First','Spotting Anomalies from Baselines'],why:'Designed as a brutal capstone, this forces analysts to rigorously form hypotheses and hunt for the tiniest forensic anomalies in massive datasets to prove an event occurred.'}
+      ]}
+    ]
+  }
+};
+
+function showHome(){
+  document.getElementById('home-page').classList.add('active');
+  document.getElementById('detail-page').classList.remove('active');
+  document.getElementById('nav-back').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showDetail(id){
+  const p=paths[id];if(!p)return;
+  document.getElementById('home-page').classList.remove('active');
+  document.getElementById('detail-page').classList.add('active');
+  document.getElementById('nav-back').style.display='block';
+  renderDetail(p);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function scrollToSec(id){
+  setTimeout(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});},120);
+}
+
+function renderDetail(p){
+  document.getElementById('detail-sidebar').innerHTML=`
+    <div style="text-align:center">
+      <div class="ds-icon-wrap" style="border-color:${p.color};margin:0 auto 12px">${p.icon}</div>
+      <div class="ds-role">${p.role}</div>
+    </div>
+    <p class="ds-desc">${p.desc}</p>
+    <div class="ds-stats">
+      <div class="ds-stat"><div class="ds-stat-num" style="color:${p.color}">${p.moduleCount}</div><div class="ds-stat-lbl">Modules</div></div>
+      <div class="ds-stat"><div class="ds-stat-num" style="color:${p.color};font-size:20px">${p.hours}</div><div class="ds-stat-lbl">Hours</div></div>
+    </div>
+    <div class="ds-cert"><div class="ds-cert-icon">🏆</div><div class="ds-cert-txt"><strong>Earn Certification</strong>${p.cert} upon completion</div></div>
+    <div class="ds-nist">${p.nist} · ${p.nistFull}</div>
+    <button class="ds-start" style="background:${p.color}">▶ Start Learning Path</button>
+  `;
+
+  const empHTML=p.employers.map(e=>`<div class="emp-item"><span class="emp-check">✓</span><span>${e}</span></div>`).join('');
+
+  const modulesHTML=p.phases.map((ph,pi)=>{
+    const mods=ph.modules.map(m=>`
+      <div class="module-card">
+        <div class="mc-header" onclick="toggleMod(this)">
+          <div class="mc-num">#${m.num}</div>
+          <div class="mc-info">
+            <div class="mc-name">${m.name}</div>
+            <div class="mc-meta">
+              <span class="mc-dur">🕐 ${m.dur}</span>
+              <span class="mc-diff ${m.dc}">${m.diff}</span>
+              <span class="mc-phase">Phase ${pi+1}</span>
+            </div>
+          </div>
+          <div class="mc-toggle">▾</div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-section">
+            <div class="mc-section-lbl">Featured Learning Objectives</div>
+            <div class="mc-tags">${m.obj.map(o=>`<span class="mc-tag">${o}</span>`).join('')}</div>
+          </div>
+          <div class="mc-section">
+            <div class="mc-section-lbl">Domain Knowledge</div>
+            <div class="mc-tags">${m.tags.map(t=>`<span class="mc-tag" style="color:${p.color};border-color:rgba(255,255,255,.1)">${t}</span>`).join('')}</div>
+          </div>
+          <div class="mc-section">
+            <div class="mc-section-lbl">Why This Module</div>
+            <p class="mc-why">${m.why}</p>
+          </div>
+        </div>
+      </div>`).join('');
+    return `
+      <div class="phase-sep">
+        <div class="phase-sep-line"></div>
+        <div class="phase-sep-txt ${ph.cls}">${ph.label}</div>
+        <div class="phase-sep-line"></div>
+      </div>${mods}`;
+  }).join('');
+
+  document.getElementById('detail-main').innerHTML=`
+    <div class="dm-title">Curriculum</div>
+    <p class="dm-sub">${p.moduleCount} modules designed to prepare you for ${p.role.toLowerCase()} roles &nbsp;·&nbsp; ${p.hours} total</p>
+    <div class="emp-box">
+      <div class="emp-header" onclick="toggleEmp(this)">
+        <div class="emp-header-txt">What employers look for in this role</div>
+        <div class="emp-toggle">▲</div>
+      </div>
+      <div class="emp-body">${empHTML}</div>
+    </div>
+    <div class="module-list">${modulesHTML}</div>
+  `;
+}
+
+function toggleMod(hdr){
+  const body=hdr.nextElementSibling;
+  const arr=hdr.querySelector('.mc-toggle');
+  const open=body.classList.toggle('open');
+  arr.textContent=open?'▴':'▾';
+}
+
+function toggleEmp(hdr){
+  const body=hdr.nextElementSibling;
+  const arr=hdr.querySelector('.emp-toggle');
+  const hidden=body.style.display==='none';
+  body.style.display=hidden?'grid':'none';
+  arr.textContent=hidden?'▲':'▼';
+}
+</script>
+</body>
+</html>
